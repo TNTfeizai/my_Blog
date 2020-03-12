@@ -33,5 +33,7 @@ class User(models.Model):
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email')
 
-class Blog(models.Model):
+
+class Article(models.Model):
+    # id =
     pass

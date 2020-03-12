@@ -29,7 +29,7 @@ class LoginView(View):
 
 # 注册
 class RegisterView(View):
-    def get(self,request):
+    def get(self, request):
         return render(request, 'register.html')
 
     def post(self, request):
@@ -56,5 +56,29 @@ class RegisterView(View):
 # 详情页
 class LoginsuccessView(View):
     def post(self, request):
-        username = request.POST.get('username', '')
-        return render(request, 'detail.html',context={'username':username})
+        return render(request, 'details.html')
+
+
+class Det_indexView(View):
+    def get(self, request):
+        return render(request, 'det_index.html')
+
+
+class WhisperView(View):
+    def get(self, request):
+        return render(request, 'whisper.html')
+
+
+class LeacotsView(View):
+    def get(self, request):
+        return render(request, 'leacots.html')
+
+
+class AlbumView(View):
+    def get(self, request):
+        return render(request, 'album.html')
+
+
+class AboutView(View):
+    def get(self, request):
+        return render(request, 'about.html')

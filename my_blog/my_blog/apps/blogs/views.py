@@ -1,7 +1,8 @@
 # Create your views here.
 from django.shortcuts import render
 from django.views import View
-from .models import User
+from .models import User, ArticleComment
+from datetime import datetime
 
 
 # 登录视图
@@ -45,6 +46,7 @@ class RegisterView(View):
         if (pass_word_1 != pass_word_2):
             return render(request, 'register.html', {'error': '两次密码请输入一致'})
         user = User()
+        user.username = user_name
         user.password = pass_word_1
         user.email = email
         user.nickname = nick_name
@@ -64,9 +66,56 @@ class Det_indexView(View):
         return render(request, 'det_index.html')
 
 
+# 文章
 class WhisperView(View):
     def get(self, request):
-        return render(request, 'whisper.html')
+        username = request.GET.get('username')
+        global username
+        # user = User.objects.filter(username=username).first()
+        # username = user.username
+        articleComment = ArticleComment.objects.filter(username=username).all().order_by('-id')
+        if articleComment:
+            body = articleComment[0].body
+            time = articleComment[0].createtime
+
+            context = {
+                'username': username,
+                'body': body,
+                'time': time,
+
+            }
+        else:
+            context = {
+                'username': '',
+                'body0': '',
+                'body1': '',
+                'time0': '',
+                'time1': ''}
+
+        return render(request, 'whisper.html', context=context)
+
+    def post(self, request):
+        body = request.POST.get('body', '')
+        ArticleComment.objects.create(username=username, body=body)
+        articleComment = ArticleComment.objects.filter(username=username).all().order_by('-id')
+        if articleComment:
+            body = articleComment[0].body
+
+            time = articleComment[0].createtime
+
+            context = {
+                'username': username,
+                'body': body,
+                'time': time,
+            }
+        else:
+            context = {
+                'username': '',
+                'body': '',
+                'time': '',
+               }
+
+        return render(request, 'whisper.html', context=context)
 
 
 class LeacotsView(View):
@@ -79,6 +128,7 @@ class AlbumView(View):
         return render(request, 'album.html')
 
 
+# 关于
 class AboutView(View):
     def get(self, request):
         return render(request, 'about.html')

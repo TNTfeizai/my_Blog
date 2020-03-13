@@ -34,6 +34,14 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email')
 
 
-class Article(models.Model):
-    # id =
-    pass
+# class Article(models.Model):
+#     # id =
+class ArticleComment(models.Model):
+    body = models.TextField()
+    username = models.CharField(max_length=50)
+    createtime = models.DateTimeField(verbose_name='创建时间', default=now)
+
+    # 使对象在后台显示更友好
+    def __str__(self):
+        return self.article
+
